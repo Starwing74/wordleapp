@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello WordlePageController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    {{ nombreEssais }}
+    {{ tailleMot }}
+
+    <br>
+
+    {% for i in tableau_wordle %}
+        {% for u in i %}
+            {{ u }}
+        {% endfor %}
+        <br>
+    {% endfor %}
+
+    <br>
+
+    {% for keyboard in keyboard %}
+        {% for keyboard in keyboard %}
+            {% if keyboard == 'DELETE' %}
+                <a class="mx-3" href="{{ path('delete_click', {x: x2, y: y2}) }}">{{ keyboard }}</a>
+            {% else %}
+                <a class="mx-3" href="{{ path('keyboard_click', {buttonLettre: keyboard, x: x2, y: y2}) }}">{{ keyboard }}</a>
+            {% endif %}
+        {% endfor %}
+        <br>
+    {% endfor %}
+</div>
+{% endblock %}
