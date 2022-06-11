@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\CallApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,14 +18,14 @@ class WordlePageController extends AbstractController
 
     public $nombre_essais = 7;
 
-    public $taille_mot = 8;
+    public $taille_mot = 7;
 
     public $tab = array();
 
     /**
      * @Route("/wordle/page", name="app_wordle_page")
      */
-    public function index(\Symfony\Component\HttpFoundation\Request $request): Response
+    public function index(\Symfony\Component\HttpFoundation\Request $request, CallApiService $callApiService): Response
     {
         for($i = 1; $i <= $this->nombre_essais; $i++){
             for($y = 1; $y <= $this->taille_mot; $y++){
@@ -36,6 +37,8 @@ class WordlePageController extends AbstractController
 
         $session->set('tableau_wordle',$this->tab);
 
+        $data = $callApiService->getWordFromWordle($this->taille_mot);
+
         return $this->render('wordle_page/index.html.twig', [
             'tableau_wordle' => $this->tab,
             'x2' => 0,
@@ -44,6 +47,7 @@ class WordlePageController extends AbstractController
             'tailleMot' => $this->taille_mot,
             'keyboard' => $this->keyboard,
             'controller_name' => 'WordlePageController',
+            'data' => $data
         ]);
     }
 

@@ -1,7 +1,4 @@
 {
-    "api-platform/api-pack": {
-        "version": "v1.3.0"
-    },
     "api-platform/core": {
         "version": "2.6",
         "recipe": {
@@ -211,6 +208,9 @@
             "./.env"
         ]
     },
+    "symfony/form": {
+        "version": "v5.4.9"
+    },
     "symfony/framework-bundle": {
         "version": "5.4",
         "recipe": {
@@ -230,6 +230,12 @@
             "./src/Kernel.php"
         ]
     },
+    "symfony/http-client": {
+        "version": "v5.4.9"
+    },
+    "symfony/http-client-contracts": {
+        "version": "v2.5.1"
+    },
     "symfony/http-foundation": {
         "version": "v5.4.9"
     },
@@ -245,13 +251,16 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
-    "symfony/orm-pack": {
-        "version": "v2.2.0"
+    "symfony/options-resolver": {
+        "version": "v5.4.3"
     },
     "symfony/password-hasher": {
         "version": "v5.4.8"
     },
     "symfony/polyfill-intl-grapheme": {
+        "version": "v1.26.0"
+    },
+    "symfony/polyfill-intl-icu": {
         "version": "v1.26.0"
     },
     "symfony/polyfill-intl-normalizer": {
@@ -320,9 +329,6 @@
     },
     "symfony/serializer": {
         "version": "v5.4.9"
-    },
-    "symfony/serializer-pack": {
-        "version": "v1.1.0"
     },
     "symfony/service-contracts": {
         "version": "v2.5.1"
