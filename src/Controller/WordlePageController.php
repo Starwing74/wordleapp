@@ -25,7 +25,7 @@ class WordlePageController extends AbstractController
     /**
      * @Route("/wordle/page", name="app_wordle_page")
      */
-    public function index(\Symfony\Component\HttpFoundation\Request $request, CallApiService $callApiService): Response
+    public function index(\Symfony\Component\HttpFoundation\Request $request, CallApiService $callApiService, int $nombreEssais, int $tailleMot): Response
     {
         for($i = 1; $i <= $this->nombre_essais; $i++){
             for($y = 1; $y <= $this->taille_mot; $y++){
