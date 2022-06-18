@@ -16,35 +16,29 @@ class WordlePageController extends AbstractController
     ['ENTER','Z','X','C','V','B','N','M','DELETE']
     ];
 
-    public $nombre_essais = 7;
-
-    public $taille_mot = 7;
-
     public $tab = array();
 
     /**
-     * @Route("/wordle/page", name="app_wordle_page")
+     * @Route("/wordle/page/{nombreEssais}/{tailleMot}", name="app_wordle_page")
      */
-    public function index(\Symfony\Component\HttpFoundation\Request $request, CallApiService $callApiService, int $nombreEssais, int $tailleMot): Response
+    public function index($nombreEssais, $tailleMot, \Symfony\Component\HttpFoundation\Request $request, CallApiService $callApiService): Response
     {
-        for($i = 1; $i <= $this->nombre_essais; $i++){
-            for($y = 1; $y <= $this->taille_mot; $y++){
+        for($i = 1; $i <= $nombreEssais; $i++){
+            for($y = 1; $y <= $tailleMot; $y++){
                 $this->tab[$i][$y] = "_";
             }
         }
 
         $session = $request->getSession();
 
-        $session->set('tableau_wordle',$this->tab);
-
-        $data = $callApiService->getWordFromWordle($this->taille_mot);
+        $data = $session->get('wordToGuess');
 
         return $this->render('wordle_page/index.html.twig', [
             'tableau_wordle' => $this->tab,
             'x2' => 0,
             'y2' => 1,
-            'nombreEssais' => $this->nombre_essais,
-            'tailleMot' => $this->taille_mot,
+            'nombreEssais' => $nombreEssais,
+            'tailleMot' => $tailleMot,
             'keyboard' => $this->keyboard,
             'controller_name' => 'WordlePageController',
             'data' => $data
@@ -52,13 +46,13 @@ class WordlePageController extends AbstractController
     }
 
     /**
-     * @Route("/wordle/page/{buttonLettre}/{x}/{y}", name="keyboard_click")
+     * @Route("/wordle/page/{nombreEssais}/{tailleMot}/{buttonLettre}/{x}/{y}", name="keyboard_click")
      */
-    public function keyboardButtons($buttonLettre, $x, $y, \Symfony\Component\HttpFoundation\Request $request): Response
+    public function keyboardButtons($nombreEssais ,$tailleMot ,$buttonLettre, $x, $y, \Symfony\Component\HttpFoundation\Request $request): Response
     {
         $x++;
 
-        if($x > $this->taille_mot){
+        if($x > $tailleMot){
             $x = 1;
             $y++;
         }
@@ -70,23 +64,25 @@ class WordlePageController extends AbstractController
         $tableau_wordle[$y][$x] = $buttonLettre;
 
         $session->set('tableau_wordle',$tableau_wordle);
+        $data = $session->get('wordToGuess');
 
         return $this->render('wordle_page/index.html.twig', [
             'tableau_wordle' => $tableau_wordle,
             'lettre' => $buttonLettre,
             'x2' => $x,
             'y2' => $y,
-            'nombreEssais' => $this->nombre_essais,
-            'tailleMot' => $this->taille_mot,
+            'nombreEssais' => $nombreEssais,
+            'tailleMot' => $tailleMot,
             'keyboard' => $this->keyboard,
+            'data' => $data,
             'controller_name' => 'WordlePageController',
         ]);
     }
 
     /**
-     * @Route("/wordle/page/{x}/{y}", name="delete_click")
+     * @Route("/wordle/page/{nombreEssais}/{tailleMot}/{x}/{y}", name="delete_click")
      */
-    public function removeLetter($x, $y, \Symfony\Component\HttpFoundation\Request $request): Response
+    public function removeLetter($nombreEssais ,$tailleMot ,$x, $y, \Symfony\Component\HttpFoundation\Request $request): Response
     {
         $session = $request->getSession();
 
@@ -97,14 +93,16 @@ class WordlePageController extends AbstractController
         $x--;
 
         $session->set('tableau_wordle',$tableau_wordle);
+        $data = $session->get('wordToGuess');
 
         return $this->render('wordle_page/index.html.twig', [
             'tableau_wordle' => $tableau_wordle,
             'x2' => $x,
             'y2' => $y,
-            'nombreEssais' => $this->nombre_essais,
-            'tailleMot' => $this->taille_mot,
+            'nombreEssais' => $nombreEssais,
+            'tailleMot' => $tailleMot,
             'keyboard' => $this->keyboard,
+            'data' => $data,
             'controller_name' => 'WordlePageController',
         ]);
     }

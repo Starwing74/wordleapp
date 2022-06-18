@@ -15,7 +15,8 @@
 
     <br>
 
-    {{ data.word }}
+    word to guess:{{ data.word }}
+    <br>
     nombreEssais:{{ nombreEssais }}
     <br>
     tailleMot:{{ tailleMot }}
@@ -33,9 +34,9 @@
     {% for keyboard in keyboard %}
         {% for keyboard in keyboard %}
             {% if keyboard == 'DELETE' %}
-                <a class="mx-3" href="{{ path('delete_click', {x: x2, y: y2}) }}">{{ keyboard }}</a>
+                <a class="mx-3" href="{{ path('delete_click', {nombreEssais: nombreEssais ,tailleMot: tailleMot,x: x2, y: y2}) }}">{{ keyboard }}</a>
             {% else %}
-                <a class="mx-3" href="{{ path('keyboard_click', {buttonLettre: keyboard, x: x2, y: y2}) }}">{{ keyboard }}</a>
+                <a class="mx-3" href="{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: keyboard, x: x2, y: y2}) }}">{{ keyboard }}</a>
             {% endif %}
         {% endfor %}
         <br>
