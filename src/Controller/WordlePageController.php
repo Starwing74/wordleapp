@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Service\CallApiService;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session;
@@ -23,8 +25,8 @@ class WordlePageController extends AbstractController
      */
     public function index($nombreEssais, $tailleMot, \Symfony\Component\HttpFoundation\Request $request, CallApiService $callApiService): Response
     {
-        for($i = 1; $i <= $nombreEssais; $i++){
-            for($y = 1; $y <= $tailleMot; $y++){
+        for($i = 0; $i < $nombreEssais; $i++){
+            for($y = 0; $y < $tailleMot; $y++){
                 $this->tab[$i][$y] = "_";
             }
         }
@@ -32,11 +34,12 @@ class WordlePageController extends AbstractController
         $session = $request->getSession();
 
         $data = $session->get('wordToGuess');
+        $session->set('tableWordle',$this->tab);
 
         return $this->render('wordle_page/index.html.twig', [
             'tableau_wordle' => $this->tab,
             'x2' => 0,
-            'y2' => 1,
+            'y2' => 0,
             'nombreEssais' => $nombreEssais,
             'tailleMot' => $tailleMot,
             'keyboard' => $this->keyboard,
@@ -50,24 +53,25 @@ class WordlePageController extends AbstractController
      */
     public function keyboardButtons($nombreEssais ,$tailleMot ,$buttonLettre, $x, $y, \Symfony\Component\HttpFoundation\Request $request): Response
     {
+        $session = $request->getSession();
+        $tab = $session->get('tableWordle');
+
+        $tab[$y][$x] = $buttonLettre;
+
+        $session->set('tableWordle',$tab);
+        $data = $session->get('wordToGuess');
+
         $x++;
 
         if($x > $tailleMot){
-            $x = 1;
+            $x = 0;
             $y++;
+
+            dd("let's verfie the word!");
         }
 
-        $session = $request->getSession();
-
-        $tableau_wordle = $session->get('tableau_wordle', []);
-
-        $tableau_wordle[$y][$x] = $buttonLettre;
-
-        $session->set('tableau_wordle',$tableau_wordle);
-        $data = $session->get('wordToGuess');
-
         return $this->render('wordle_page/index.html.twig', [
-            'tableau_wordle' => $tableau_wordle,
+            'tableau_wordle' => $tab,
             'lettre' => $buttonLettre,
             'x2' => $x,
             'y2' => $y,
@@ -85,18 +89,18 @@ class WordlePageController extends AbstractController
     public function removeLetter($nombreEssais ,$tailleMot ,$x, $y, \Symfony\Component\HttpFoundation\Request $request): Response
     {
         $session = $request->getSession();
+        $tab = $session->get('tableWordle');
 
-        $tableau_wordle = $session->get('tableau_wordle', []);
+        //dd($x."---". $y);
 
-        $tableau_wordle[$y][$x] = "_";
-
+        $tab[$y][$x] = "_";
         $x--;
 
-        $session->set('tableau_wordle',$tableau_wordle);
+        $session->set('tableWordle',$tab);
         $data = $session->get('wordToGuess');
 
         return $this->render('wordle_page/index.html.twig', [
-            'tableau_wordle' => $tableau_wordle,
+            'tableau_wordle' => $tab,
             'x2' => $x,
             'y2' => $y,
             'nombreEssais' => $nombreEssais,
