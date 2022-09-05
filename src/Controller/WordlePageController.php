@@ -25,6 +25,7 @@ class WordlePageController extends AbstractController
      */
     public function index($nombreEssais, $tailleMot, \Symfony\Component\HttpFoundation\Request $request, CallApiService $callApiService): Response
     {
+
         for($i = 0; $i < $nombreEssais; $i++){
             for($y = 0; $y < $tailleMot; $y++){
                 $this->tab[$i][$y] = "_";
