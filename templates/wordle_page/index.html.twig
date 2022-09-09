@@ -21,13 +21,29 @@
     <br>
     tailleMot:{{ tailleMot }}
     <br>
-
-    {% for i in tableau_wordle %}
-        {% for u in i %}
-            {{ u }}
+    <table>
+        {% for i in tableau_wordle %}
+            <tr>
+                {% for u in i %}
+                    <td>
+                        {% if u[1] == "0" %}
+                            <div style="color: #000000">
+                                {{ u[0] }} {{ u[1] }}
+                            </div>
+                        {% elseif u[1] == "-1" %}
+                            <div style="color: #ffb700">
+                                {{ u[0] }} {{ u[1] }}
+                            </div>
+                        {% elseif u[1] == "1" %}
+                            <div style="color: #43A047">
+                                {{ u[0] }} {{ u[1] }}
+                            </div>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
         {% endfor %}
-        <br>
-    {% endfor %}
+    </table>
 
     <br>
 
@@ -35,7 +51,7 @@
         {% for keyboard in keyboard %}
             {% if keyboard == 'DELETE' %}
                 <a class="mx-3" href="{{ path('delete_click', {nombreEssais: nombreEssais ,tailleMot: tailleMot,x: x2, y: y2}) }}">{{ keyboard }}</a>
-            {% else %}
+            {% elseif keyboard != 'DELETE' %}
                 <a class="mx-3" href="{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: keyboard, x: x2, y: y2}) }}">{{ keyboard }}</a>
             {% endif %}
         {% endfor %}

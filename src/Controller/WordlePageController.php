@@ -19,6 +19,7 @@ class WordlePageController extends AbstractController
     ];
 
     public $tab = array();
+    public $tabCheck = array();
 
     /**
      * @Route("/wordle/page/{nombreEssais}/{tailleMot}", name="app_wordle_page")
@@ -28,7 +29,7 @@ class WordlePageController extends AbstractController
 
         for($i = 0; $i < $nombreEssais; $i++){
             for($y = 0; $y < $tailleMot; $y++){
-                $this->tab[$i][$y] = "_";
+                $this->tab[$i][$y] = ["_","0"];
             }
         }
 
@@ -36,6 +37,7 @@ class WordlePageController extends AbstractController
 
         $data = $session->get('wordToGuess');
         $session->set('tableWordle',$this->tab);
+        $session->set('tableCheck',$this->tabCheck);
 
         return $this->render('wordle_page/index.html.twig', [
             'tableau_wordle' => $this->tab,
@@ -57,18 +59,47 @@ class WordlePageController extends AbstractController
         $session = $request->getSession();
         $tab = $session->get('tableWordle');
 
-        $tab[$y][$x] = $buttonLettre;
+        $tab[$y][$x][0] = strtolower($buttonLettre);
 
         $session->set('tableWordle',$tab);
         $data = $session->get('wordToGuess');
 
         $x++;
 
-        if($x > $tailleMot){
+        $tab2 = array();
+
+        if($x > $tailleMot-1){
+            $z = 0;
+            $mot = "";
+            while($z <= $tailleMot-1){
+
+                $mot .= $tab[$y][$z][0];
+
+                $z++;
+            }
+
+            $x = 0;
+            $z = 0;
+
+            while($x <= $tailleMot-1){
+                while($z <= $tailleMot-1){
+                    $tab2[$x][$z] = [$data["word"][$x],$mot[$z]];
+                    if($data["word"][$x] == $mot[$x]){
+                        $tab[$y][$x][1] = "1";
+                        break;
+                    }
+                    if($data["word"][$x] == $mot[$z]){
+                        $tab[$y][$z][1] = "-1";
+                        break;
+                    }
+                    $z++;
+                }
+                $z = 0;
+                $x++;
+            }
             $x = 0;
             $y++;
-
-            dd("let's verfie the word!");
+            $session->set('tableWordle',$tab);
         }
 
         return $this->render('wordle_page/index.html.twig', [
@@ -92,12 +123,16 @@ class WordlePageController extends AbstractController
         $session = $request->getSession();
         $tab = $session->get('tableWordle');
 
-        //dd($x."---". $y);
-
-        $tab[$y][$x] = "_";
+        $tab[$y][$x][0] = "_";
         $x--;
 
+        if($x == 0) {
+            $x = 0;
+        }
+
         $session->set('tableWordle',$tab);
+
+
         $data = $session->get('wordToGuess');
 
         return $this->render('wordle_page/index.html.twig', [
