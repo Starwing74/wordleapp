@@ -16,8 +16,6 @@ class settingFormType extends AbstractType
         $builder
             ->add('tailleMot', ChoiceType::class, [
                 'choices'  => [
-                    '1' => 1,
-                    '2' => 2,
                     '3' => 3,
                     '4' => 4,
                     '5' => 5,
@@ -28,8 +26,6 @@ class settingFormType extends AbstractType
                 ],])
             ->add('nombreEssais', ChoiceType::class, [
                 'choices'  => [
-                    '1' => 1,
-                    '2' => 2,
                     '3' => 3,
                     '4' => 4,
                     '5' => 5,

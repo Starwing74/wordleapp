@@ -49,13 +49,14 @@
 
     {% for keyboard in keyboard %}
         {% for keyboard in keyboard %}
-            {% if keyboard == 'DELETE' %}
-                <a class="mx-3" href="{{ path('delete_click', {nombreEssais: nombreEssais ,tailleMot: tailleMot,x: x2, y: y2}) }}">{{ keyboard }}</a>
-            {% elseif keyboard != 'DELETE' %}
                 <a class="mx-3" href="{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: keyboard, x: x2, y: y2}) }}">{{ keyboard }}</a>
-            {% endif %}
         {% endfor %}
         <br>
     {% endfor %}
+    <a class="mx-3" href="{{ path('delete_click', {nombreEssais: nombreEssais ,tailleMot: tailleMot, x: x2, y: y2}) }}">DELETE</a>
+
+    {% if enter == "yes" %}
+        <a class="mx-3" href="{{ path('enter_click', {nombreEssais: nombreEssais ,tailleMot: tailleMot, x: x2, y: y2}) }}">ENTER</a>
+    {% endif %}
 </div>
 {% endblock %}
