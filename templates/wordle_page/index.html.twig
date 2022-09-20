@@ -53,7 +53,9 @@
         {% endfor %}
         <br>
     {% endfor %}
+
     <a class="mx-3" href="{{ path('delete_click', {nombreEssais: nombreEssais ,tailleMot: tailleMot, x: x2, y: y2}) }}">DELETE</a>
+    <a class="mx-3" href="{{ path('delete_all_click', {nombreEssais: nombreEssais ,tailleMot: tailleMot, x: x2, y: y2}) }}">DELETE LINE</a>
 
     {% if enter == "yes" %}
         <a class="mx-3" href="{{ path('enter_click', {nombreEssais: nombreEssais ,tailleMot: tailleMot, x: x2, y: y2}) }}">ENTER</a>
