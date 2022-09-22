@@ -14,8 +14,6 @@ class CallApiService
         $this->client = $client;
     }
 
-    private $test = 0;
-
     public function getWordFromWordle(int $int): array
     {
         $response = $this->client->request(
@@ -34,12 +32,10 @@ class CallApiService
 
         $checkWord = $response2->getContent(false);
 
-        if(str_contains($checkWord,"No Definitions Found")){
-            $this->getWordFromWordle($int);
-            $this->test += 1;
-        }else{
+        if(str_contains($checkWord,'[{"word":"' . $check["word"] . '"')){
             return $response->toArray();
         }
+
         return $this->getWordFromWordle($int);
     }
 

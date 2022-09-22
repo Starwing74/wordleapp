@@ -14,16 +14,17 @@ class WordlePageController extends AbstractController
 {
     public $keyboard = [
 
-        ['Q','W','E','R','T','R','Y','U','I','O','P'],
-        ['A','S','D','F','G','H','J','K','L'],
-        ['Z','X','C','V','B','N','M']
+        [['Q',"0"],['W',"0"],['E',"0"],['R',"0"],['T',"0"],['Y',"0"],['U',"0"],['I',"0"],['O',"0"],['P',"0"]],
+        [['A',"0"],['S',"0"],['D',"0"],['F',"0"],['G',"0"],['H',"0"],['J',"0"],['K',"0"],['L',"0"]],
+        [['Z',"0"],['X',"0"],['C',"0"],['V',"0"],['B',"0"],['N',"0"],['M',"0"]]
+
     ];
 
     public $tab = array();
     public $tabCheck = array();
 
     /**
-     * @Route("/wordle/page/{nombreEssais}/{tailleMot}/0/0", name="app_wordle_page")
+     * @Route("/wordle/page/{nombreEssais}/{tailleMot}", name="app_wordle_page")
      */
     public function index($nombreEssais, $tailleMot, \Symfony\Component\HttpFoundation\Request $request, CallApiService $callApiService): Response
     {
@@ -39,6 +40,7 @@ class WordlePageController extends AbstractController
         $data = $session->get('wordToGuess');
         $session->set('tableWordle',$this->tab);
         $session->set('tableCheck',$this->tabCheck);
+        $session->set('keyboard',$this->keyboard);
 
         return $this->render('wordle_page/index.html.twig', [
             'tableau_wordle' => $this->tab,
@@ -49,7 +51,8 @@ class WordlePageController extends AbstractController
             'keyboard' => $this->keyboard,
             'controller_name' => 'WordlePageController',
             'data' => $data,
-            'enter' => "no"
+            'enter' => "no",
+            'exist' => "yes"
         ]);
     }
 
@@ -60,6 +63,7 @@ class WordlePageController extends AbstractController
     {
         $session = $request->getSession();
         $tab = $session->get('tableWordle');
+        $keyboard= $session->get('keyboard');
 
         $tab[$y][$x][0] = strtolower($buttonLettre);
 
@@ -74,10 +78,11 @@ class WordlePageController extends AbstractController
                 'y2' => $y,
                 'nombreEssais' => $nombreEssais,
                 'tailleMot' => $tailleMot,
-                'keyboard' => $this->keyboard,
+                'keyboard' => $keyboard,
                 'data' => $data,
                 'controller_name' => 'WordlePageController',
-                'enter' => "yes"
+                'enter' => "yes",
+                'exist' => "yes"
             ]);
         }
 
@@ -92,10 +97,11 @@ class WordlePageController extends AbstractController
             'y2' => $y,
             'nombreEssais' => $nombreEssais,
             'tailleMot' => $tailleMot,
-            'keyboard' => $this->keyboard,
+            'keyboard' => $keyboard,
             'data' => $data,
             'controller_name' => 'WordlePageController',
-            'enter' => "no"
+            'enter' => "no",
+            'exist' => "yes"
         ]);
     }
 
@@ -107,6 +113,7 @@ class WordlePageController extends AbstractController
 
         $session = $request->getSession();
         $tab = $session->get('tableWordle');
+        $keyboard= $session->get('keyboard');
 
         $session->set('tableWordle',$tab);
         $data = $session->get('wordToGuess');
@@ -131,10 +138,11 @@ class WordlePageController extends AbstractController
                 'y2' => $y,
                 'nombreEssais' => $nombreEssais,
                 'tailleMot' => $tailleMot,
-                'keyboard' => $this->keyboard,
+                'keyboard' => $keyboard,
                 'data' => $data,
                 'controller_name' => 'WordlePageController',
-                'enter' => "no"
+                'enter' => "no",
+                'exist' => "no",
             ]);
         }
 
@@ -178,9 +186,40 @@ class WordlePageController extends AbstractController
             }
         }
 
+        $i = 0;
+        $z = 0;
+        $m = 0;
+
+        while($i <= $tailleMot-1){
+            while($z <= count($keyboard) - 1){
+                while($m <= count($keyboard[$z]) - 1) {
+                    if($tab[$y][$i][1] == "-1") {
+                        if($tab[$y][$i][0] == strtolower($keyboard[$z][$m][0])){
+                            if($keyboard[$z][$m][1] == "1"){
+                                $keyboard[$z][$m][1] = "1";
+                            }else{
+                                $keyboard[$z][$m][1] = "-1";
+                            }
+                        }
+                    }
+                    if($tab[$y][$i][1] == "1") {
+                        if($tab[$y][$i][0] == strtolower($keyboard[$z][$m][0])){
+                            $keyboard[$z][$m][1] = "1";
+                        }
+                    }
+                    $m++;
+                }
+                $m = 0;
+                $z++;
+            }
+            $z = 0;
+            $i++;
+        }
+
         $x = 0;
         $y++;
         $session->set('tableWordle',$tab);
+        $session->set('keyboard',$keyboard);
 
         return $this->render('wordle_page/index.html.twig', [
             'tableau_wordle' => $tab,
@@ -188,10 +227,11 @@ class WordlePageController extends AbstractController
             'y2' => $y,
             'nombreEssais' => $nombreEssais,
             'tailleMot' => $tailleMot,
-            'keyboard' => $this->keyboard,
+            'keyboard' => $keyboard,
             'data' => $data,
             'controller_name' => 'WordlePageController',
-            'enter' => "no"
+            'enter' => "no",
+            'exist' => "yes"
         ]);
     }
 
@@ -202,6 +242,7 @@ class WordlePageController extends AbstractController
     {
         $session = $request->getSession();
         $tab = $session->get('tableWordle');
+        $keyboard= $session->get('keyboard');
 
         $tab[$y][$x][0] = "_";
         $tab[$y][$x][1] = "0";
@@ -220,10 +261,11 @@ class WordlePageController extends AbstractController
             'y2' => $y,
             'nombreEssais' => $nombreEssais,
             'tailleMot' => $tailleMot,
-            'keyboard' => $this->keyboard,
+            'keyboard' => $keyboard,
             'data' => $data,
             'controller_name' => 'WordlePageController',
-            'enter' => "no"
+            'enter' => "no",
+            'exist' => "yes",
         ]);
     }
 
@@ -234,6 +276,7 @@ class WordlePageController extends AbstractController
     {
         $session = $request->getSession();
         $tab = $session->get('tableWordle');
+        $keyboard= $session->get('keyboard');
 
         $i = 0;
 
@@ -253,10 +296,11 @@ class WordlePageController extends AbstractController
             'y2' => $y,
             'nombreEssais' => $nombreEssais,
             'tailleMot' => $tailleMot,
-            'keyboard' => $this->keyboard,
+            'keyboard' => $keyboard,
             'data' => $data,
             'controller_name' => 'WordlePageController',
-            'enter' => "no"
+            'enter' => "no",
+            'exist' => "yes"
         ]);
     }
 }

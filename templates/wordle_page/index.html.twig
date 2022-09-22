@@ -21,27 +21,68 @@
     <br>
     tailleMot:{{ tailleMot }}
     <br>
+    {% set indice = 0 %}
     <table>
         {% for i in tableau_wordle %}
             <tr>
                 {% for u in i %}
                     <td>
-                        {% if u[1] == "0" %}
-                            <div style="color: #000000">
-                                {{ u[0] }} {{ u[1] }}
+                        {% if exist == "yes" %}
+                            <div>
+                                {% if u[1] == "0" %}
+                                    <div style="color: #000000">
+                                        {{ u[0] }}
+                                    </div>
+                                {% elseif u[1] == "-1" %}
+                                    <div style="color: #ffb700">
+                                        {{ u[0] }}
+                                    </div>
+                                {% elseif u[1] == "1" %}
+                                    <div style="color: #43A047">
+                                        {{ u[0] }}
+                                    </div>
+                                {% endif %}
                             </div>
-                        {% elseif u[1] == "-1" %}
-                            <div style="color: #ffb700">
-                                {{ u[0] }} {{ u[1] }}
+                        {% elseif (exist == "no") and (y2 == indice) %}
+                            <div style="background-color: #D2054E">
+                                {% if u[1] == "0" %}
+                                    <div style="color: #000000">
+                                        {{ u[0] }}
+                                    </div>
+                                {% elseif u[1] == "-1" %}
+                                    <div style="color: #ffb700">
+                                        {{ u[0] }}
+                                    </div>
+                                {% elseif u[1] == "1" %}
+                                    <div style="color: #43A047">
+                                        {{ u[0] }}
+                                    </div>
+                                {% endif %}
                             </div>
-                        {% elseif u[1] == "1" %}
-                            <div style="color: #43A047">
-                                {{ u[0] }} {{ u[1] }}
+                        {% elseif (exist == "no") %}
+                            <div>
+                                {% if u[1] == "0" %}
+                                    <div style="color: #000000">
+                                        {{ u[0] }}
+                                    </div>
+                                {% elseif u[1] == "-1" %}
+                                    <div style="color: #ffb700">
+                                        {{ u[0] }}
+                                    </div>
+                                {% elseif u[1] == "1" %}
+                                    <div style="color: #43A047">
+                                        {{ u[0] }}
+                                    </div>
+                                {% endif %}
                             </div>
                         {% endif %}
                     </td>
                 {% endfor %}
+                {% if (exist == "no") and (y2 == indice) %}
+                    <td>word doesn't exist</td>
+                {% endif %}
             </tr>
+            {% set indice = indice + 1 %}
         {% endfor %}
     </table>
 
@@ -49,7 +90,13 @@
 
     {% for keyboard in keyboard %}
         {% for keyboard in keyboard %}
-                <a class="mx-3" href="{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: keyboard, x: x2, y: y2}) }}">{{ keyboard }}</a>
+            {% if keyboard[1] == "0" %}
+                <a class="mx-3" style="color: #000000" href="{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: keyboard[0], x: x2, y: y2}) }}">{{ keyboard[0] }}</a>
+            {% elseif keyboard[1] == "-1" %}
+                <a class="mx-3" style="color: #ffb700" href="{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: keyboard[0], x: x2, y: y2}) }}">{{ keyboard[0] }}</a>
+            {% elseif keyboard[1] == "1" %}
+                <a class="mx-3" style="color: #43A047" href="{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: keyboard[0], x: x2, y: y2}) }}">{{ keyboard[0] }}</a>
+            {% endif %}
         {% endfor %}
         <br>
     {% endfor %}
