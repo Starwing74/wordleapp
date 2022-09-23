@@ -21,6 +21,8 @@
     <br>
     tailleMot:{{ tailleMot }}
     <br>
+    {{ x2 }}
+    <br>
     {% set indice = 0 %}
     <table>
         {% for i in tableau_wordle %}
@@ -101,7 +103,7 @@
         <br>
     {% endfor %}
 
-    <a class="mx-3" href="{{ path('delete_click', {nombreEssais: nombreEssais ,tailleMot: tailleMot, x: x2, y: y2}) }}">DELETE</a>
+    <a class="mx-3" href="{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: "delete", x: x2, y: y2}) }}">DELETE</a>
     <a class="mx-3" href="{{ path('delete_all_click', {nombreEssais: nombreEssais ,tailleMot: tailleMot, x: x2, y: y2}) }}">DELETE LINE</a>
 
     {% if enter == "yes" %}

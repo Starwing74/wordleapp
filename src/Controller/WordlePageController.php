@@ -24,7 +24,7 @@ class WordlePageController extends AbstractController
     public $tabCheck = array();
 
     /**
-     * @Route("/wordle/page/{nombreEssais}/{tailleMot}", name="app_wordle_page")
+     * @Route("/wordle/page/{nombreEssais}/{tailleMot}/start/0/0", name="app_wordle_page")
      */
     public function index($nombreEssais, $tailleMot, \Symfony\Component\HttpFoundation\Request $request, CallApiService $callApiService): Response
     {
@@ -64,13 +64,50 @@ class WordlePageController extends AbstractController
         $session = $request->getSession();
         $tab = $session->get('tableWordle');
         $keyboard= $session->get('keyboard');
-
-        $tab[$y][$x][0] = strtolower($buttonLettre);
-
-        $session->set('tableWordle',$tab);
         $data = $session->get('wordToGuess');
 
-        if($x == $tailleMot-1){
+        if($buttonLettre == "delete"){
+
+            if($x != 0){
+                $tab[$y][$x-1][0] = "_";
+                $x--;
+            }else{
+                $x = 0;
+            }
+
+            $session->set('tableWordle',$tab);
+
+            return $this->render('wordle_page/index.html.twig', [
+                'tableau_wordle' => $tab,
+                'lettre' => $buttonLettre,
+                'x2' => $x,
+                'y2' => $y,
+                'nombreEssais' => $nombreEssais,
+                'tailleMot' => $tailleMot,
+                'keyboard' => $keyboard,
+                'data' => $data,
+                'controller_name' => 'WordlePageController',
+                'enter' => "no",
+                'exist' => "yes"
+            ]);
+        }
+
+        if($x == $tailleMot){
+            $tab[$y][$x-1][0] = strtolower($buttonLettre);
+
+            $x = $tailleMot;
+
+            $session->set('tableWordle',$tab);
+        }else{
+            $tab[$y][$x][0] = strtolower($buttonLettre);
+            $session->set('tableWordle',$tab);
+
+            if($x <= $tailleMot){
+                $x++;
+            }
+        }
+
+        if($x == $tailleMot){
             return $this->render('wordle_page/index.html.twig', [
                 'tableau_wordle' => $tab,
                 'lettre' => $buttonLettre,
@@ -84,10 +121,6 @@ class WordlePageController extends AbstractController
                 'enter' => "yes",
                 'exist' => "yes"
             ]);
-        }
-
-        if($x != $tailleMot-1){
-            $x++;
         }
 
         return $this->render('wordle_page/index.html.twig', [
@@ -232,40 +265,6 @@ class WordlePageController extends AbstractController
             'controller_name' => 'WordlePageController',
             'enter' => "no",
             'exist' => "yes"
-        ]);
-    }
-
-    /**
-     * @Route("/wordle/delete/{nombreEssais}/{tailleMot}/{x}/{y}", name="delete_click")
-     */
-    public function removeLetter($nombreEssais ,$tailleMot ,$x, $y, \Symfony\Component\HttpFoundation\Request $request): Response
-    {
-        $session = $request->getSession();
-        $tab = $session->get('tableWordle');
-        $keyboard= $session->get('keyboard');
-
-        $tab[$y][$x][0] = "_";
-        $tab[$y][$x][1] = "0";
-
-        if($x != 0){
-            $x--;
-        }
-
-        $session->set('tableWordle',$tab);
-
-        $data = $session->get('wordToGuess');
-
-        return $this->render('wordle_page/index.html.twig', [
-            'tableau_wordle' => $tab,
-            'x2' => $x,
-            'y2' => $y,
-            'nombreEssais' => $nombreEssais,
-            'tailleMot' => $tailleMot,
-            'keyboard' => $keyboard,
-            'data' => $data,
-            'controller_name' => 'WordlePageController',
-            'enter' => "no",
-            'exist' => "yes",
         ]);
     }
 
