@@ -8,106 +8,144 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    <a>restart</a>
-
-    <br>
-
-    word to guess:{{ data.word }}
-    <br>
-    nombreEssais:{{ nombreEssais }}
-    <br>
-    tailleMot:{{ tailleMot }}
-    <br>
-    {{ x2 }}
-    <br>
+<div class="example-wrapper card bg-info">
+    <center>
+    <h2>tries: {{ nombreEssais }}</h2>
+    <h2>length: {{ tailleMot }}</h2>
     {% set indice = 0 %}
+        {% if (exist == "no") %}
+            <h2 class="text-danger"><b>word doesn't exist!</b></h2>
+        {% else %}
+            <h2 class="text-info">_</h2>
+        {% endif %}
     <table>
         {% for i in tableau_wordle %}
             <tr>
+                <div class="card-group">
                 {% for u in i %}
                     <td>
                         {% if exist == "yes" %}
-                            <div>
+                            <div class="card text-center" style="width: 5rem;">
                                 {% if u[1] == "0" %}
-                                    <div style="color: #000000">
-                                        {{ u[0] }}
-                                    </div>
+                                    {% if u[0] == "_" %}
+                                        <div style="color: #ffffff">
+                                            <h1>{{ u[0] }}</h1>
+                                        </div>
+                                    {% else %}
+                                        <div style="color: #000000">
+                                            <h1>{{ u[0] }}</h1>
+                                        </div>
+                                    {% endif %}
                                 {% elseif u[1] == "-1" %}
                                     <div style="color: #ffb700">
-                                        {{ u[0] }}
+                                        <h1>{{ u[0] }}</h1>
                                     </div>
                                 {% elseif u[1] == "1" %}
                                     <div style="color: #43A047">
-                                        {{ u[0] }}
+                                        <h1>{{ u[0] }}</h1>
+                                    </div>
+                                {% elseif u[1] == "2" %}
+                                    <div style="color: #ff0000">
+                                        <h1>{{ u[0] }}</h1>
                                     </div>
                                 {% endif %}
                             </div>
                         {% elseif (exist == "no") and (y2 == indice) %}
-                            <div style="background-color: #D2054E">
+                            <div class="card text-center bg-danger" style="width: 5rem;">
                                 {% if u[1] == "0" %}
-                                    <div style="color: #000000">
-                                        {{ u[0] }}
-                                    </div>
+                                    {% if u[0] == "_" %}
+                                        <div style="color: #ffffff">
+                                            <h1>{{ u[0] }}</h1>
+                                        </div>
+                                    {% else %}
+                                        <div style="color: #000000">
+                                            <h1>{{ u[0] }}</h1>
+                                        </div>
+                                    {% endif %}
                                 {% elseif u[1] == "-1" %}
                                     <div style="color: #ffb700">
-                                        {{ u[0] }}
+                                        <h1>{{ u[0] }}</h1>
                                     </div>
                                 {% elseif u[1] == "1" %}
                                     <div style="color: #43A047">
-                                        {{ u[0] }}
+                                        <h1>{{ u[0] }}</h1>
+                                    </div>
+                                {% elseif u[1] == "2" %}
+                                    <div style="color: #ff0000">
+                                        <h1>{{ u[0] }}</h1>
                                     </div>
                                 {% endif %}
                             </div>
                         {% elseif (exist == "no") %}
-                            <div>
+                            <div class="card text-center" style="width: 5rem;">
                                 {% if u[1] == "0" %}
-                                    <div style="color: #000000">
-                                        {{ u[0] }}
-                                    </div>
+                                    {% if u[0] == "_" %}
+                                        <div style="color: #ffffff">
+                                            <h1>{{ u[0] }}</h1>
+                                        </div>
+                                    {% else %}
+                                        <div style="color: #000000">
+                                            <h1>{{ u[0] }}</h1>
+                                        </div>
+                                    {% endif %}
                                 {% elseif u[1] == "-1" %}
                                     <div style="color: #ffb700">
-                                        {{ u[0] }}
+                                        <h1>{{ u[0] }}</h1>
                                     </div>
                                 {% elseif u[1] == "1" %}
                                     <div style="color: #43A047">
-                                        {{ u[0] }}
+                                        <h1>{{ u[0] }}</h1>
+                                    </div>
+                                {% elseif u[1] == "2" %}
+                                    <div style="color: #ff0000">
+                                        <h1>{{ u[0] }}</h1>
                                     </div>
                                 {% endif %}
                             </div>
                         {% endif %}
                     </td>
                 {% endfor %}
-                {% if (exist == "no") and (y2 == indice) %}
-                    <td>word doesn't exist</td>
-                {% endif %}
+                </div>
             </tr>
             {% set indice = indice + 1 %}
         {% endfor %}
     </table>
 
-    <br>
+        <br>
 
     {% for keyboard in keyboard %}
+    <div class="card-group">
         {% for keyboard in keyboard %}
+        <div class="card text-center" style="background-color: #ffffff">
             {% if keyboard[1] == "0" %}
-                <a class="mx-3" style="color: #000000" href="{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: keyboard[0], x: x2, y: y2}) }}">{{ keyboard[0] }}</a>
+                <input type="button" style="background-color: #ffffff" onclick="location.href='{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: keyboard[0], x: x2, y: y2}) }}';" value="{{ keyboard[0] }}">
             {% elseif keyboard[1] == "-1" %}
-                <a class="mx-3" style="color: #ffb700" href="{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: keyboard[0], x: x2, y: y2}) }}">{{ keyboard[0] }}</a>
+                <input type="button" style="background-color: #ffb700" onclick="location.href='{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: keyboard[0], x: x2, y: y2}) }}';" value="{{ keyboard[0] }}">
             {% elseif keyboard[1] == "1" %}
-                <a class="mx-3" style="color: #43A047" href="{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: keyboard[0], x: x2, y: y2}) }}">{{ keyboard[0] }}</a>
+                <input type="button" style="background-color: #43A047" onclick="location.href='{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: keyboard[0], x: x2, y: y2}) }}';" value="{{ keyboard[0] }}">
+            {% elseif keyboard[1] == "2"  %}
+                <input type="button" style="background-color: #ff0000" onclick="location.href='{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: keyboard[0], x: x2, y: y2}) }}';" value="{{ keyboard[0] }}">
             {% endif %}
+        </div>
         {% endfor %}
-        <br>
+    </div>
     {% endfor %}
 
-    <a class="mx-3" href="{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: "delete", x: x2, y: y2}) }}">DELETE</a>
-    <a class="mx-3" href="{{ path('delete_all_click', {nombreEssais: nombreEssais ,tailleMot: tailleMot, x: x2, y: y2}) }}">DELETE LINE</a>
-
-    {% if enter == "yes" %}
-        <a class="mx-3" href="{{ path('enter_click', {nombreEssais: nombreEssais ,tailleMot: tailleMot, x: x2, y: y2}) }}">ENTER</a>
-    {% endif %}
+    <div class="card-group">
+        <div class="card border-0 text-center">
+            <input type="button" style="background-color: #ffffff" onclick="location.href='{{ path('keyboard_click', {nombreEssais: nombreEssais,tailleMot: tailleMot,buttonLettre: "delete", x: x2, y: y2}) }}';" value="DELETE">
+        </div>
+        <div class="card border-0 text-center">
+            <input type="button" style="background-color: #ffffff" onclick="location.href='{{ path('delete_all_click', {nombreEssais: nombreEssais ,tailleMot: tailleMot, x: x2, y: y2}) }}';" value="DELETE LINE">
+        </div>
+        <div class="card border-0 text-center">
+            {% if enter == "yes" %}
+                <input type="button" style="background-color: #ffffff" onclick="location.href='{{ path('enter_click', {nombreEssais: nombreEssais ,tailleMot: tailleMot, x: x2, y: y2}) }}';" value="ENTER">
+            {% else %}
+                <input type="button" style="background-color: #ffffff" value="ENTER" disabled>
+            {% endif %}
+        </div>
+    </div>
+    </center>
 </div>
 {% endblock %}

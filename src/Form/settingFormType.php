@@ -22,7 +22,7 @@ class settingFormType extends AbstractType
                     '7' => 7,
                     '8' => 8,
                     '9' => 9,
-                ],])
+                ],'attr' => ['class' => 'form-select form-select-lg', 'aria-label' => "Default select example"]])
             ->add('nombreEssais', ChoiceType::class, [
                 'choices'  => [
                     '3' => 3,
@@ -32,7 +32,7 @@ class settingFormType extends AbstractType
                     '7' => 7,
                     '8' => 8,
                     '9' => 9,
-                ],]);
+                ],'attr' => ['class' => 'form-select form-select-lg', 'aria-label' => "Default select example"]]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

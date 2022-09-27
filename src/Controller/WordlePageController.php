@@ -180,6 +180,15 @@ class WordlePageController extends AbstractController
         }
 
         $i = 0;
+
+        while($i <= $tailleMot-1){
+            if($data["word"][$i] != $mot[$i]){
+                $tab[$y][$i][1] = "2";
+            }
+            $i++;
+        }
+
+        $i = 0;
         $z = 0;
 
         while($i <= $tailleMot-1){
@@ -238,6 +247,11 @@ class WordlePageController extends AbstractController
                     if($tab[$y][$i][1] == "1") {
                         if($tab[$y][$i][0] == strtolower($keyboard[$z][$m][0])){
                             $keyboard[$z][$m][1] = "1";
+                        }
+                    }
+                    if($tab[$y][$i][1] == "2") {
+                        if($tab[$y][$i][0] == strtolower($keyboard[$z][$m][0])){
+                            $keyboard[$z][$m][1] = "2";
                         }
                     }
                     $m++;
