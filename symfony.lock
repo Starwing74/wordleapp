@@ -91,11 +91,20 @@
     "doctrine/sql-formatter": {
         "version": "1.1.2"
     },
-    "fig/link-util": {
-        "version": "1.1.2"
-    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.12"
+    },
+    "knplabs/knp-snappy": {
+        "version": "v1.4.1"
+    },
+    "knplabs/knp-snappy-bundle": {
+        "version": "1.9",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.5",
+            "ref": "c81bdcf4a9d4e7b1959071457f9608631865d381"
+        }
     },
     "laminas/laminas-code": {
         "version": "4.5.1"
@@ -289,6 +298,9 @@
     },
     "symfony/polyfill-php81": {
         "version": "v1.26.0"
+    },
+    "symfony/process": {
+        "version": "v5.4.11"
     },
     "symfony/property-access": {
         "version": "v5.4.8"

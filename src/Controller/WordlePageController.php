@@ -228,13 +228,18 @@ class WordlePageController extends AbstractController
             }
         }
 
-        $i = 0;
+        $i = $tailleMot-1;
         $z = 0;
         $m = 0;
 
-        while($i <= $tailleMot-1){
+        while($i >= 0){
             while($z <= count($keyboard) - 1){
                 while($m <= count($keyboard[$z]) - 1) {
+                    if($tab[$y][$i][1] == "2") {
+                        if($tab[$y][$i][0] == strtolower($keyboard[$z][$m][0])){
+                            $keyboard[$z][$m][1] = "2";
+                        }
+                    }
                     if($tab[$y][$i][1] == "-1") {
                         if($tab[$y][$i][0] == strtolower($keyboard[$z][$m][0])){
                             if($keyboard[$z][$m][1] == "1"){
@@ -249,18 +254,13 @@ class WordlePageController extends AbstractController
                             $keyboard[$z][$m][1] = "1";
                         }
                     }
-                    if($tab[$y][$i][1] == "2") {
-                        if($tab[$y][$i][0] == strtolower($keyboard[$z][$m][0])){
-                            $keyboard[$z][$m][1] = "2";
-                        }
-                    }
                     $m++;
                 }
                 $m = 0;
                 $z++;
             }
             $z = 0;
-            $i++;
+            $i--;
         }
 
         $x = 0;
