@@ -1,0 +1,2 @@
+#!/bin/sh
+rsync -av ./ jchampliaud@jchampliaud.pairserver.com:~/public_html/testing --include=vendor --exclude-from=.gitignore --exclude=".*"
